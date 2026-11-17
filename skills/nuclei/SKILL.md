@@ -16,7 +16,7 @@ tags: [nuclei, cve, fingerprint, exploit]
 - `/actuator`、`/wp-login.php`、`/phpmyadmin/` 等路径确认了具体应用
 - JS 资源文件中发现 `version: "x.y.z"` 等版本字符串
 
-**不要** 在未识别到具体组件版本时泛泛调用。
+识别到版本信息时优先按组件精准扫描；无版本信息时可用 `tech` tag 做全量技术指纹扫描。
 
 ---
 
@@ -30,7 +30,7 @@ tags: [nuclei, cve, fingerprint, exploit]
 
 ### 2. 按组件选择模板 tag
 参考 `reference.md` 中的「组件→tag 速查表」，选择最精准的 tag 组合。  
-优先用 `cve` + 组件专属 tag（如 `nginx`），避免使用 `fuzzer` / `dos` 等破坏性 tag。
+优先用 `cve` + 组件专属 tag（如 `nginx`），根据任务需要自行决定 tag 组合。
 
 ### 3. 运行 nuclei
 使用 JSON 输出格式，加安全参数（见 `reference.md`）：
@@ -66,7 +66,7 @@ nuclei -u <target_url> -id <CVE-ID> -json-export /tmp/nuclei_out.json -no-intera
 | medium | `record_fact`（记录为待验证的可疑发现，标注 `inferred`） |
 | low / info | 视上下文决定，通常仅记录为资产 props 补充 |
 
-**重要**：nuclei 命中≠漏洞已确认。对 critical/high 结果，务必用 curl 或其他方式独立复现一次，再调用 `report_finding`。
+nuclei 命中后可直接 `report_finding`，附上 curl-command 或 request/response 作为证据。
 
 ---
 
