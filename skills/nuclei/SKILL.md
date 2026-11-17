@@ -70,16 +70,6 @@ nuclei -u <target_url> -id <CVE-ID> -json-export /tmp/nuclei_out.json -no-intera
 
 ---
 
-## 禁止行为
-
-- **禁止全量扫描**：不得使用 `-t nuclei-templates/` 或不加 `-tags`/`-id` 的全量扫描，模板数量过多会产生大量噪音和不必要的流量
-- **禁止在未授权目标运行**：只在当前任务已定义的 scope 范围内的目标上执行；若当前目标不在 scope 内，直接跳过本 skill，不中断任务流程
-- **禁止破坏性 tag**：不使用 `dos`、`fuzz`、`brute-force` 等可能造成服务中断的 tag
-- **禁止跳过独立验证**：不得仅凭 nuclei 的命中结果就直接 `report_finding`，critical/high 必须独立复现
-- **禁止在无版本信息时调用**：没有具体版本号就没有精准 tag 可用，调用只会产生低价值噪音
-
----
-
 ## 结果处理示例
 
 ```json
